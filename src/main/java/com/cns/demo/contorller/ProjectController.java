@@ -18,7 +18,8 @@ import com.cns.demo.response.ApiResponse;
 import com.cns.demo.service.ProjectService;
 
 import jakarta.validation.Valid;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @RestController
 @RequestMapping("/api/v1")
 public class ProjectController {
@@ -31,8 +32,7 @@ public class ProjectController {
 	}
 
 	@PostMapping("/save")
-	public ResponseEntity<ApiResponse<ProjectDto>> saveProject(
-			@RequestBody @Valid ProjectDto projectDto) {
+	public ResponseEntity<ApiResponse<ProjectDto>> saveProject(@RequestBody @Valid ProjectDto projectDto) {
 		return ResponseEntity.ok(new ApiResponse<>("Save Successfully.", projectService.createProject(projectDto)));
 
 	}
@@ -57,6 +57,7 @@ public class ProjectController {
 			@RequestBody ProjectDto projectDto) {
 		ProjectDto proUpdate = projectService.updateProject(id, projectDto);
 
+		log.debug("Fetching all projects"+ proUpdate);
 		return ResponseEntity.ok(new ApiResponse<>("Project is successfully updated.", proUpdate));
 	}
 
@@ -64,6 +65,15 @@ public class ProjectController {
 	public void deleteProject(@PathVariable("id") Long id) {
 		projectService.deleteProject(id);
 
+	}
+
+	@GetMapping("/search")
+	public ResponseEntity<Page<ProjectDto>> searchProjects(@RequestParam String keyword,
+			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size,
+			@RequestParam(defaultValue = "title") String sortBy) {
+
+		Page<ProjectDto> result = projectService.getFilteredProjects(keyword, page, size, sortBy);
+		return ResponseEntity.ok(result);
 	}
 
 }

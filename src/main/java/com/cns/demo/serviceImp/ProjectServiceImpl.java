@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,9 @@ import com.cns.demo.pojo.Project;
 import com.cns.demo.repository.ProjectRepository;
 import com.cns.demo.service.ProjectService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class ProjectServiceImpl implements ProjectService {
 	private final ProjectRepository projectRepository;
@@ -52,6 +56,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public ProjectDto updateProject(Long id, ProjectDto projectDto) {
+		log.info("Updating project with ID: {}", id);
 		Project project = projectRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(id + " is not found: 404"));
 
@@ -69,6 +74,13 @@ public class ProjectServiceImpl implements ProjectService {
 
 		projectRepository.delete(project);
 
+	}
+
+	@Override
+	public Page<ProjectDto> getFilteredProjects(String keyword, int page, int size, String sortBy) {
+		Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+		    Page<Project> filteredPage = projectRepository.findByTitleContainingIgnoreCase(keyword, pageable);
+		    return filteredPage.map(project -> mapper.map(project, ProjectDto.class));
 	}
 
 }
