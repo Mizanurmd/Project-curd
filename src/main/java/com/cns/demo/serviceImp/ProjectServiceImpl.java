@@ -79,8 +79,8 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public Page<ProjectDto> getFilteredProjects(String keyword, int page, int size, String sortBy) {
 		Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-		    Page<Project> filteredPage = projectRepository.findByTitleContainingIgnoreCase(keyword, pageable);
-		    return filteredPage.map(project -> mapper.map(project, ProjectDto.class));
+		Page<Project> filteredPage = projectRepository.findByTitleContainingIgnoreCase(keyword, pageable);
+		return filteredPage.map(project -> mapper.map(project, ProjectDto.class));
 	}
 
 }

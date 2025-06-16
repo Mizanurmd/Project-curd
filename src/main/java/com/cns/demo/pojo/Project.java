@@ -1,9 +1,6 @@
 package com.cns.demo.pojo;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -14,15 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="project")
-public class Project {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+@Table(name = "project")
+public class Project extends CommonEntity {
+
 	@NotBlank(message = "Title is required")
 	private String title;
-	
+
 	@NotBlank(message = "Title is required")
 	private String description;
 
