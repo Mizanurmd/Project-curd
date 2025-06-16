@@ -16,9 +16,6 @@ import com.cns.demo.pojo.Project;
 import com.cns.demo.repository.ProjectRepository;
 import com.cns.demo.service.ProjectService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Service
 public class ProjectServiceImpl implements ProjectService {
 	private final ProjectRepository projectRepository;
@@ -56,7 +53,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public ProjectDto updateProject(Long id, ProjectDto projectDto) {
-		log.info("Updating project with ID: {}", id);
+
 		Project project = projectRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(id + " is not found: 404"));
 

@@ -6,6 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
@@ -27,13 +28,16 @@ public abstract class CommonEntity {
 	@CreatedDate
 	@Column(name = "created_at", nullable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
+	@Schema(hidden = true)
 	private Date createdAt;
 
 	@LastModifiedDate
 	@Column(name = "updated_at")
 	@Temporal(TemporalType.TIMESTAMP)
+	@Schema(hidden = true)
 	private Date updatedAt;
 
+	@Schema(hidden = true)
 	private Date deletedAt;
 
 	// If you want User relations, uncomment and map later
