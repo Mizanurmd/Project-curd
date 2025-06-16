@@ -10,8 +10,8 @@ import jakarta.persistence.PreUpdate;
 public class CustomAuditingEntityListener extends AuditingEntityListener {
 	@PrePersist
 	public void prePersist(Object target) {
-		// Only set createdAt, not updatedAt on insert
-		if (target instanceof com.cns.demo.pojo.CommonEntity entity) {
+		if (target instanceof com.cns.demo.pojo.CommonEntity) {
+			com.cns.demo.pojo.CommonEntity entity = (com.cns.demo.pojo.CommonEntity) target;
 			entity.setCreatedAt(new Date());
 			// Do NOT set updatedAt here
 		}
@@ -19,7 +19,8 @@ public class CustomAuditingEntityListener extends AuditingEntityListener {
 
 	@PreUpdate
 	public void preUpdate(Object target) {
-		if (target instanceof com.cns.demo.pojo.CommonEntity entity) {
+		if (target instanceof com.cns.demo.pojo.CommonEntity) {
+			com.cns.demo.pojo.CommonEntity entity = (com.cns.demo.pojo.CommonEntity) target;
 			entity.setUpdatedAt(new Date());
 		}
 	}

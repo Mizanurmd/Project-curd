@@ -18,10 +18,9 @@ import com.cns.demo.response.ApiResponse;
 import com.cns.demo.service.ProjectService;
 
 import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
-@Slf4j
+
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/projects")
 public class ProjectController {
 
 	private final ProjectService projectService;
@@ -30,6 +29,13 @@ public class ProjectController {
 		super();
 		this.projectService = projectService;
 	}
+	
+	@GetMapping
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("Hello Swagger!");
+    }
+	
+	
 
 	@PostMapping("/save")
 	public ResponseEntity<ApiResponse<ProjectDto>> saveProject(@RequestBody @Valid ProjectDto projectDto) {
@@ -37,7 +43,7 @@ public class ProjectController {
 
 	}
 
-	@GetMapping("/projects")
+	@GetMapping("/all")
 	public ResponseEntity<ApiResponse<Page<ProjectDto>>> getAllProjects(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "id") String sortBy) {
 
@@ -45,7 +51,7 @@ public class ProjectController {
 		return ResponseEntity.ok(new ApiResponse<>("All data retrieve successful.", result));
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/update/{id}")
 	public ResponseEntity<ApiResponse<Project>> getProject(@PathVariable("id") Long id) {
 		Project p = projectService.getSingleProject(id);
 		return ResponseEntity.ok(new ApiResponse<>("Single data retrieve successful.", p));
@@ -57,7 +63,6 @@ public class ProjectController {
 			@RequestBody ProjectDto projectDto) {
 		ProjectDto proUpdate = projectService.updateProject(id, projectDto);
 
-		log.debug("Fetching all projects"+ proUpdate);
 		return ResponseEntity.ok(new ApiResponse<>("Project is successfully updated.", proUpdate));
 	}
 
