@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/holidays")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class WeeklyHolidaySetupController {
     private final WeeklyHolidaySetupService weeklyHolidaySetupService;
 
