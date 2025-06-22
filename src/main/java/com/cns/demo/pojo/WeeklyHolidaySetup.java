@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "weekly_holiday_setup")
 public class WeeklyHolidaySetup extends CommonEntity {
     private String holidayEnglish;
+    private String holidayBangla;
     private String timeBetweenEnglish;
     private String timeBetweenBangla;
     private String hotlineNoEnglish;
