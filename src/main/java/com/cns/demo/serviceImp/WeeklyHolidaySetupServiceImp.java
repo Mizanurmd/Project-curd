@@ -41,7 +41,7 @@ public class WeeklyHolidaySetupServiceImp implements WeeklyHolidaySetupService {
     public WeeklyHolidaySetup updateWeeklyHolidaySetup(Long id, WeeklyHolidaySetup weeklyHolidaySetup) {
         WeeklyHolidaySetup holidaySetup = weeklyHolidaySetupRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Weekly Holiday Setup Not Found id:" + id));
         holidaySetup.setHolidayEnglish(weeklyHolidaySetup.getHolidayEnglish());
-        holidaySetup.setHoidayBangla(weeklyHolidaySetup.getHoidayBangla());
+        holidaySetup.setHolidayBangla(weeklyHolidaySetup.getHolidayBangla());
         holidaySetup.setTimeBetweenEnglish(weeklyHolidaySetup.getTimeBetweenEnglish());
         holidaySetup.setTimeBetweenBangla(weeklyHolidaySetup.getTimeBetweenBangla());
         holidaySetup.setHotlineNoEnglish(weeklyHolidaySetup.getHotlineNoEnglish());
