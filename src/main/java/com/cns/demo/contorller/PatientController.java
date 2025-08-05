@@ -25,7 +25,7 @@ public class PatientController {
 
     // Save data into DB
     @PostMapping("/save")
-    public ResponseEntity<Patient>createPatient(@ModelAttribute PatientDto patientDto) throws IOException {
+    public ResponseEntity<Patient> createPatient(@ModelAttribute PatientDto patientDto) throws IOException {
         Patient patient1 = patientService.addPatient(patientDto);
         return new ResponseEntity<>(patient1, HttpStatus.CREATED);
     }
@@ -39,14 +39,14 @@ public class PatientController {
 
     // Single data retrieve from DB
     @GetMapping("/{id}")
-    public ResponseEntity<Patient>getPatientById(@PathVariable("id") long id) throws IOException {
+    public ResponseEntity<Patient> getPatientById(@PathVariable("id") long id) throws IOException {
         Patient patient = patientService.getPatient(id);
         return new ResponseEntity<>(patient, HttpStatus.OK);
     }
 
     // Retrieve all data from DB
     @GetMapping("/all")
-    public ResponseEntity<List<Patient>>getAllPatients(){
+    public ResponseEntity<List<Patient>> getAllPatients() {
         List<Patient> patients = patientService.getAllPatients();
         return new ResponseEntity<>(patients, HttpStatus.OK);
     }

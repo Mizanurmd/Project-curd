@@ -8,25 +8,36 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Date;
+import java.sql.Date;
+
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="patient")
+@Table(name = "patient")
 public class Patient extends CommonEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     private String patientName;
     private String gender;
     private int age;
-    private LocalDate dateOfBirth;
+    private Date dateOfBirth;
     private String address;
     private String phone;
     private String email;
     @Lob
     private byte[] photo;
+    private String imageType;
+    private String imageName;
+    private Long imageSize;
+
+    @Lob
+    private byte[] file;
+    private String fileName;
+    private String fileType;
+    private Long fileSize;
+
+    private boolean activeYn;
 
 
 }

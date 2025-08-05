@@ -30,23 +30,35 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public Patient addPatient(PatientDto patientDto) throws IOException {
         Patient patient = new Patient();
+
+        // Basic Info
         patient.setPatientName(patientDto.getPatientName());
         patient.setGender(patientDto.getGender());
         patient.setAge(patientDto.getAge());
-        if (patientDto.getDateOfBirth() != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-            try {
-                patient.setDateOfBirth(LocalDate.parse(sdf.format(patientDto.getDateOfBirth())));
-            } catch (Exception e) {
-                throw new RuntimeException("Invalid date format. Expected yyyy-MM-dd");
-            }
-        }
+        patient.setDateOfBirth(patientDto.getDateOfBirth());
         patient.setAddress(patientDto.getAddress());
         patient.setPhone(patientDto.getPhone());
         patient.setEmail(patientDto.getEmail());
+
+        // Photo Handling
         if (patientDto.getPhoto() != null && !patientDto.getPhoto().isEmpty()) {
-            patient.setPhoto(patientDto.getPhoto().getBytes());
+            MultipartFile image = patientDto.getPhoto();
+            patient.setPhoto(image.getBytes());
+            patient.setImageType(image.getContentType());
+            patient.setImageName(image.getOriginalFilename());
+            patient.setImageSize(image.getSize());
         }
+        // File Handling
+        if (patientDto.getFile() != null && !patientDto.getFile().isEmpty()) {
+            MultipartFile file = patientDto.getFile();
+            patient.setFile(file.getBytes());
+            patient.setFileName(file.getOriginalFilename());
+            patient.setFileType(file.getContentType());
+            patient.setFileSize(file.getSize());
+        }
+
+        //Active Flag
+        patient.setActiveYn(patientDto.isActiveYn());
         return patientRepository.save(patient);
     }
 
@@ -55,6 +67,7 @@ public class PatientServiceImpl implements PatientService {
         Optional<Patient> pId = patientRepository.findById(id);
         if (pId.isPresent()) {
             Patient patient = pId.get();
+            // Update Basic Info
             patient.setPatientName(patientDto.getPatientName());
             patient.setGender(patientDto.getGender());
             patient.setAge(patientDto.getAge());
@@ -62,13 +75,30 @@ public class PatientServiceImpl implements PatientService {
             patient.setAddress(patientDto.getAddress());
             patient.setPhone(patientDto.getPhone());
             patient.setEmail(patientDto.getEmail());
-            if (patientDto.getPhoto() != null && !patientDto.getPhoto().isEmpty()) {
-                patient.setPhoto(patientDto.getPhoto().getBytes());
 
+            // Update photo Info
+            if (patientDto.getPhoto() != null && !patientDto.getPhoto().isEmpty()) {
+                MultipartFile image = patientDto.getPhoto();
+                patient.setPhoto(image.getBytes());
+                patient.setImageType(image.getContentType());
+                patient.setImageName(image.getOriginalFilename());
+                patient.setImageSize(image.getSize());
             }
+
+            // Update file Info
+            if (patientDto.getFile() != null && !patientDto.getFile().isEmpty()) {
+                MultipartFile file = patientDto.getFile();
+                patient.setFile(file.getBytes());
+                patient.setFileName(file.getOriginalFilename());
+                patient.setFileType(file.getContentType());
+                patient.setFileSize(file.getSize());
+            }
+            // Update Active Flag
+            patient.setActiveYn(patientDto.isActiveYn());
+
             return patientRepository.save(patient);
-        }else{
-        throw new RuntimeException("Patient id with :: "+ id +" not found");
+        } else {
+            throw new RuntimeException("Patient id with :: " + id + " not found");
         }
 
     }
@@ -86,6 +116,6 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public void deletePatient(Long id) {
-    patientRepository.deleteById(id);
+        patientRepository.deleteById(id);
     }
 }
